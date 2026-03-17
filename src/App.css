@@ -1,0 +1,139 @@
+/* App-specific styles */
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom selection color */
+::selection {
+  background: rgba(77, 255, 206, 0.3);
+  color: #F4F6FF;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid #4DFFCE;
+  outline-offset: 2px;
+}
+
+/* Prevent text selection on UI elements */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Hardware acceleration for animations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Glass morphism variants */
+.glass-subtle {
+  background: rgba(11, 14, 23, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(244, 246, 255, 0.06);
+}
+
+/* Chart container */
+.chart-container {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Trading panel styles */
+.trade-input {
+  background: rgba(11, 14, 23, 0.6);
+  border: 1px solid rgba(244, 246, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+.trade-input:focus {
+  border-color: #4DFFCE;
+  box-shadow: 0 0 0 2px rgba(77, 255, 206, 0.15);
+}
+
+/* Price change indicators */
+.price-up {
+  color: #4DFFCE;
+}
+
+.price-down {
+  color: #ef4444;
+}
+
+/* Sidebar styles */
+.sidebar-item {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.sidebar-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0;
+  background: #4DFFCE;
+  border-radius: 0 2px 2px 0;
+  transition: height 0.2s ease;
+}
+
+.sidebar-item.active::before,
+.sidebar-item:hover::before {
+  height: 60%;
+}
+
+/* Scrollbar for tables */
+.table-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background: rgba(77, 255, 206, 0.3);
+  border-radius: 2px;
+}
+
+/* Loading skeleton */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(244, 246, 255, 0.05) 25%,
+    rgba(244, 246, 255, 0.1) 50%,
+    rgba(244, 246, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .glass-card {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
