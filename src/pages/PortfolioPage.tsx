@@ -10,7 +10,6 @@ import {
   Menu,
   X,
   Search,
-  Filter,
   ArrowUpRight,
   ArrowDownRight,
   Download,
@@ -35,9 +34,11 @@ import { Badge } from '../components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { Progress } from '../components/ui/progress';
+import { Separator } from '../components/ui/separator';
 import TradingChart from '../components/charts/TradingChart';
 import Sidebar from '../components/layout/Sidebar';
+import MobileHeader from '../components/layout/MobileHeader';
+import MobileSearchModal from '../components/layout/MobileSearchModal';
 
 // Mock portfolio data
 interface Holding {
@@ -198,6 +199,7 @@ export default function PortfolioPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTimeframe, setSelectedTimeframe] = useState('24h');
   const [holdings, setHoldings] = useState<Holding[]>(mockHoldings);
@@ -269,19 +271,20 @@ export default function PortfolioPage() {
 
       {/* Main Content */}
       <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-20'}`}>
-        {/* Header */}
-        <header className="bg-deep-black/50 backdrop-blur-xl border-b border-white/10 px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="lg:hidden p-2 hover:bg-white/10 rounded-lg"
-              >
-                <Menu className="w-5 h-5" />
-              </button>
+        {/* Mobile Header */}
+        <MobileHeader
+          title="Portfolio"
+          onMenuClick={() => setIsMobileMenuOpen(true)}
+          onSearchClick={() => setIsSearchOpen(true)}
+          showNotifications={true}
+          onNotificationsClick={() => setShowNotifications(!showNotifications)}
+          notificationCount={2}
+        />
 
-              <h2 className="text-2xl font-bold">Portfolio</h2>
-            </div>
+        {/* Desktop Header */}
+        <header className="hidden lg:flex bg-deep-black/50 backdrop-blur-xl border-b border-white/10 px-6 py-4">
+          <div className="flex items-center justify-between w-full">
+            <h2 className="text-2xl font-bold">Portfolio</h2>
 
             <div className="flex items-center gap-4">
               <div className="relative">
@@ -833,6 +836,15 @@ export default function PortfolioPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Mobile Search Modal */}
+      <MobileSearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        placeholder="Search holdings..."
+        value={searchTerm}
+        onChange={setSearchTerm}
+      />
     </div>
   );
 }

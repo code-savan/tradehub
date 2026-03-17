@@ -7,8 +7,6 @@ import {
   Settings,
   Bell,
   LogOut,
-  Menu,
-  X,
   User,
   Shield,
   Key,
@@ -25,7 +23,9 @@ import {
   Lock,
   HelpCircle,
   FileText,
-  Database
+  Database,
+  Menu,
+  X
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
@@ -41,6 +41,7 @@ import { Switch } from '../components/ui/switch';
 import { Label } from '../components/ui/label';
 import { Separator } from '../components/ui/separator';
 import Sidebar from '../components/layout/Sidebar';
+import MobileHeader from '../components/layout/MobileHeader';
 
 interface NavItem {
   id: string;
@@ -258,18 +259,19 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-20'}`}>
         {/* Header */}
-        <header className="bg-deep-black/50 backdrop-blur-xl border-b border-white/10 px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="lg:hidden p-2 hover:bg-white/10 rounded-lg"
-              >
-                <Menu className="w-5 h-5" />
-              </button>
+        {/* Mobile Header */}
+        <MobileHeader
+          title="Settings"
+          onMenuClick={() => setIsMobileMenuOpen(true)}
+          showNotifications={true}
+          onNotificationsClick={() => setShowNotifications(!showNotifications)}
+          notificationCount={1}
+        />
 
-              <h2 className="text-2xl font-bold">Settings</h2>
-            </div>
+        {/* Desktop Header */}
+        <header className="hidden lg:flex bg-deep-black/50 backdrop-blur-xl border-b border-white/10 px-6 py-4">
+          <div className="flex items-center justify-between w-full">
+            <h2 className="text-2xl font-bold">Settings</h2>
 
             <div className="flex items-center gap-4">
               <button

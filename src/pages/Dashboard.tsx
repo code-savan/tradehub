@@ -6,15 +6,14 @@ import {
   Wallet,
   Settings,
   Bell,
-  Menu,
   Search
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useMarketStore } from '../store/marketStore';
-import { toast } from 'sonner';
 
 import Sidebar from '../components/layout/Sidebar';
+import MobileHeader from '../components/layout/MobileHeader';
+import MobileSearchModal from '../components/layout/MobileSearchModal';
 import TradingChart from '../components/charts/TradingChart';
 import MarketOverview from '../components/MarketOverview';
 import PortfolioSection from '../components/PortfolioSection';
@@ -34,7 +33,6 @@ const navItems: NavItem[] = [
 ];
 
 export default function Dashboard() {
-  const navigate = useNavigate();
   const { user } = useAuthStore();
   const { updatePrices } = useMarketStore();
 
@@ -42,6 +40,8 @@ export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   // Update prices periodically
   useEffect(() => {
@@ -70,24 +70,26 @@ export default function Dashboard() {
         pageTitle="TradeFlow"
       />
       <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-20'}`}>
-        {/* Top Bar */}
-        <header className="h-16 bg-deep-navy/50 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30">
-          {/* Left - Mobile Menu & Search */}
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="lg:hidden p-2 text-text-secondary hover:text-text-primary"
-            >
-              <Menu className="w-6 h-6" />
-            </button>
-            <div className="hidden sm:flex items-center gap-2 bg-white/5 rounded-xl px-4 py-2">
-              <Search className="w-4 h-4 text-text-secondary" />
-              <input
-                type="text"
-                placeholder="Search assets..."
-                className="bg-transparent text-sm text-text-primary placeholder:text-text-secondary/50 outline-none w-48"
-              />
-            </div>
+        {/* Mobile Header */}
+        <MobileHeader
+          title="Dashboard"
+          onMenuClick={() => setIsMobileMenuOpen(true)}
+          onSearchClick={() => setIsSearchOpen(true)}
+          showNotifications={true}
+          onNotificationsClick={() => setShowNotifications(!showNotifications)}
+          notificationCount={3}
+        />
+
+        {/* Desktop Header */}
+        <header className="hidden lg:flex h-16 bg-deep-navy/50 backdrop-blur-xl border-b border-white/5 items-center justify-between px-6 sticky top-0 z-30">
+          {/* Left - Search */}
+          <div className="flex items-center gap-2 bg-white/5 rounded-xl px-4 py-2">
+            <Search className="w-4 h-4 text-text-secondary" />
+            <input
+              type="text"
+              placeholder="Search assets..."
+              className="bg-transparent text-sm text-text-primary placeholder:text-text-secondary/50 outline-none w-48"
+            />
           </div>
 
           {/* Right - Notifications & User */}
@@ -174,6 +176,15 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
+
+      {/* Mobile Search Modal */}
+      <MobileSearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        placeholder="Search assets..."
+        value={searchTerm}
+        onChange={setSearchTerm}
+      />
 
       {/* Click outside to close notifications */}
       {showNotifications && (

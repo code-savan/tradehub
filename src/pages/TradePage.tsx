@@ -1,20 +1,13 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  LayoutDashboard, 
-  TrendingUp, 
-  Wallet, 
-  Settings, 
-  Bell, 
-  LogOut, 
-  Menu,
+import {
+  TrendingUp,
   Search,
   ArrowUpRight,
   ArrowDownRight,
   Plus,
   Minus
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useMarketStore } from '../store/marketStore';
 import { toast } from 'sonner';
@@ -23,9 +16,11 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Badge } from '../components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import Sidebar from '../components/layout/Sidebar';
+import MobileHeader from '../components/layout/MobileHeader';
+import MobileSearchModal from '../components/layout/MobileSearchModal';
 import TradingChart from '../components/charts/TradingChart';
 
 interface OrderType {
@@ -81,7 +76,7 @@ export default function TradePage() {
 
     // Simulate order execution
     toast.success(`${tradeSide === 'buy' ? 'Buy' : 'Sell'} order placed successfully!`);
-    
+
     // Reset form
     setAmount('');
     setPrice('');
@@ -94,7 +89,7 @@ export default function TradePage() {
     return parseFloat(amount) * orderPrice;
   };
 
-  const filteredAssets = assets.filter(asset => 
+  const filteredAssets = assets.filter(asset =>
     asset.symbol.toLowerCase().includes(searchTerm.toLowerCase()) ||
     asset.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -325,8 +320,8 @@ export default function TradePage() {
                   <Button
                     onClick={handleTrade}
                     className={`w-full ${
-                      tradeSide === 'buy' 
-                        ? 'bg-green-500 hover:bg-green-600' 
+                      tradeSide === 'buy'
+                        ? 'bg-green-500 hover:bg-green-600'
                         : 'bg-red-500 hover:bg-red-600'
                     }`}
                   >
@@ -351,13 +346,13 @@ export default function TradePage() {
                         </div>
                       ))}
                     </div>
-                    
+
                     {/* Current Price */}
                     <div className="flex justify-between py-2 border-y border-white/10">
                       <span className="font-bold">${currentAsset?.price.toLocaleString()}</span>
                       <span className="text-gray-400">67432.85</span>
                     </div>
-                    
+
                     {/* Buy Orders */}
                     <div className="space-y-1">
                       {[69425, 69420, 69415, 69410, 69405].map((price, index) => (

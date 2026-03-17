@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Wallet,
-  Menu,
   ArrowDownRight,
   CreditCard,
   Building,
@@ -24,6 +23,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Label } from '../components/ui/label';
 import { Badge } from '../components/ui/badge';
 import Sidebar from '../components/layout/Sidebar';
+import MobileHeader from '../components/layout/MobileHeader';
 
 interface WithdrawMethod {
   id: string;
@@ -214,19 +214,15 @@ export default function WithdrawPage() {
 
       {/* Main Content */}
       <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-20'}`}>
-        {/* Header */}
-        <header className="bg-deep-black/50 backdrop-blur-xl border-b border-white/10 px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="lg:hidden p-2 hover:bg-white/10 rounded-lg"
-              >
-                <Menu className="w-5 h-5" />
-              </button>
-              <h2 className="text-2xl font-bold">Withdraw Funds</h2>
-            </div>
-          </div>
+        {/* Mobile Header */}
+        <MobileHeader
+          title="Withdraw Funds"
+          onMenuClick={() => setIsMobileMenuOpen(true)}
+        />
+
+        {/* Desktop Header */}
+        <header className="hidden lg:flex bg-deep-black/50 backdrop-blur-xl border-b border-white/10 px-6 py-4">
+          <h2 className="text-2xl font-bold">Withdraw Funds</h2>
         </header>
 
         {/* Withdraw Content */}
