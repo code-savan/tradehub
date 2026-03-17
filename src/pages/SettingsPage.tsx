@@ -24,7 +24,6 @@ import {
   HelpCircle,
   FileText,
   Database,
-  Menu,
   X
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -305,26 +304,28 @@ export default function SettingsPage() {
         <div className="flex-1 overflow-auto p-6">
           <div className="max-w-4xl mx-auto space-y-6">
             <Tabs defaultValue="profile" className="space-y-6">
-              <TabsList className="bg-white/5 border-white/10 grid grid-cols-2 lg:grid-cols-5">
-                <TabsTrigger value="profile" className="data-[state=active]:bg-blue-500/20">
+              <TabsList className="bg-white/5 border-white/10 flex lg:grid lg:grid-cols-5 overflow-x-auto gap-1 p-1">
+                <TabsTrigger value="profile" className="data-[state=active]:bg-blue-500/20 whitespace-nowrap min-w-fit px-3 py-2">
                   <User className="w-4 h-4 mr-2" />
-                  Profile
+                  <span className="hidden sm:inline">Profile</span>
                 </TabsTrigger>
-                <TabsTrigger value="trading" className="data-[state=active]:bg-blue-500/20">
+                <TabsTrigger value="trading" className="data-[state=active]:bg-blue-500/20 whitespace-nowrap min-w-fit px-3 py-2">
                   <TrendingUp className="w-4 h-4 mr-2" />
-                  Trading
+                  <span className="hidden sm:inline">Trading</span>
                 </TabsTrigger>
-                <TabsTrigger value="security" className="data-[state=active]:bg-blue-500/20">
+                <TabsTrigger value="security" className="data-[state=active]:bg-blue-500/20 whitespace-nowrap min-w-fit px-3 py-2">
                   <Shield className="w-4 h-4 mr-2" />
-                  Security
+                  <span className="hidden sm:inline">Security</span>
                 </TabsTrigger>
-                <TabsTrigger value="notifications" className="data-[state=active]:bg-blue-500/20">
+                <TabsTrigger value="notifications" className="data-[state=active]:bg-blue-500/20 whitespace-nowrap min-w-fit px-3 py-2">
                   <Bell className="w-4 h-4 mr-2" />
-                  Notifications
+                  <span className="hidden sm:inline">Notifications</span>
+                  <span className="sm:hidden">Notifs</span>
                 </TabsTrigger>
-                <TabsTrigger value="api" className="data-[state=active]:bg-blue-500/20">
+                <TabsTrigger value="api" className="data-[state=active]:bg-blue-500/20 whitespace-nowrap min-w-fit px-3 py-2">
                   <Key className="w-4 h-4 mr-2" />
-                  API
+                  <span className="hidden sm:inline">API</span>
+                  <span className="sm:hidden">API</span>
                 </TabsTrigger>
               </TabsList>
 

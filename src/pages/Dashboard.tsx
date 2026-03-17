@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  LayoutDashboard,
   TrendingUp,
-  Wallet,
-  Settings,
   Bell,
   Search
 } from 'lucide-react';
@@ -12,25 +9,11 @@ import { useAuthStore } from '../store/authStore';
 import { useMarketStore } from '../store/marketStore';
 
 import Sidebar from '../components/layout/Sidebar';
-import MobileHeader from '../components/layout/MobileHeader';
 import MobileSearchModal from '../components/layout/MobileSearchModal';
 import TradingChart from '../components/charts/TradingChart';
 import MarketOverview from '../components/MarketOverview';
 import PortfolioSection from '../components/PortfolioSection';
 import TradePanel from '../components/TradePanel';
-
-interface NavItem {
-  id: string;
-  label: string;
-  icon: React.ElementType;
-}
-
-const navItems: NavItem[] = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { id: 'markets', label: 'Markets', icon: TrendingUp },
-  { id: 'portfolio', label: 'Portfolio', icon: Wallet },
-  { id: 'settings', label: 'Settings', icon: Settings },
-];
 
 export default function Dashboard() {
   const { user } = useAuthStore();
@@ -70,16 +53,6 @@ export default function Dashboard() {
         pageTitle="TradeFlow"
       />
       <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-20'}`}>
-        {/* Mobile Header */}
-        <MobileHeader
-          title="Dashboard"
-          onMenuClick={() => setIsMobileMenuOpen(true)}
-          onSearchClick={() => setIsSearchOpen(true)}
-          showNotifications={true}
-          onNotificationsClick={() => setShowNotifications(!showNotifications)}
-          notificationCount={3}
-        />
-
         {/* Desktop Header */}
         <header className="hidden lg:flex h-16 bg-deep-navy/50 backdrop-blur-xl border-b border-white/5 items-center justify-between px-6 sticky top-0 z-30">
           {/* Left - Search */}

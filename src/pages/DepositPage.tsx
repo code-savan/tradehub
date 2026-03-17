@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import {
   Wallet,
   Menu,
@@ -12,7 +11,6 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../store/authStore';
 import { toast } from 'sonner';
 
 import { Button } from '../components/ui/button';
@@ -35,7 +33,6 @@ interface PaymentMethod {
 
 export default function DepositPage() {
   const navigate = useNavigate();
-  const { user } = useAuthStore();
 
   const [activeTab, setActiveTab] = useState('deposit');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);

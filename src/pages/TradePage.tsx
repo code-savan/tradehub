@@ -1,14 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-  TrendingUp,
-  Search,
-  ArrowUpRight,
-  ArrowDownRight,
-  Plus,
-  Minus
-} from 'lucide-react';
-import { useAuthStore } from '../store/authStore';
+import { TrendingUp } from 'lucide-react';
 import { useMarketStore } from '../store/marketStore';
 import { toast } from 'sonner';
 
@@ -19,8 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Tabs, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import Sidebar from '../components/layout/Sidebar';
-import MobileHeader from '../components/layout/MobileHeader';
-import MobileSearchModal from '../components/layout/MobileSearchModal';
 import TradingChart from '../components/charts/TradingChart';
 
 interface OrderType {
@@ -32,8 +21,6 @@ interface TradeSide {
 }
 
 export default function TradePage() {
-  const navigate = useNavigate();
-  const { user } = useAuthStore();
   const { assets, updatePrices } = useMarketStore();
 
   const [activeTab, setActiveTab] = useState('trade');
@@ -47,7 +34,7 @@ export default function TradePage() {
   const [amount, setAmount] = useState('');
   const [price, setPrice] = useState('');
   const [stopPrice, setStopPrice] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm] = useState('');
 
   // Update prices periodically
   useEffect(() => {
@@ -64,15 +51,6 @@ export default function TradePage() {
       toast.error('Please fill in all required fields');
       return;
     }
-
-    const orderData = {
-      asset: selectedAsset,
-      side: tradeSide,
-      type: orderType,
-      amount: parseFloat(amount),
-      price: orderType === 'market' ? currentAsset.price : parseFloat(price),
-      stopPrice: orderType.includes('stop') ? parseFloat(stopPrice) : undefined,
-    };
 
     // Simulate order execution
     toast.success(`${tradeSide === 'buy' ? 'Buy' : 'Sell'} order placed successfully!`);
@@ -107,34 +85,7 @@ export default function TradePage() {
         pageTitle="TradeHub"
       />
 
-      {/* Main Content */}
-      <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-20'}`}>
-        {/* Header */}
-        <header className="bg-deep-black/50 backdrop-blur-xl border-b border-white/10 px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="lg:hidden p-2 hover:bg-white/10 rounded-lg"
-              >
-                <Menu className="w-5 h-5" />
-              </button>
-              <h2 className="text-2xl font-bold">Trade</h2>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <Input
-                  placeholder="Search assets..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-white/5 border-white/10 text-white placeholder-gray-400 w-64"
-                />
-              </div>
-            </div>
-          </div>
-        </header>
-
+      <main className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-20'}`}>
         {/* Trade Content */}
         <div className="flex-1 overflow-auto p-6">
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -339,7 +290,7 @@ export default function TradePage() {
                   <div className="space-y-2">
                     {/* Sell Orders */}
                     <div className="space-y-1">
-                      {[69450, 69445, 69440, 69435, 69430].map((price, index) => (
+                      {[69450, 69445, 69440, 69435, 69430].map((price) => (
                         <div key={price} className="flex justify-between text-sm">
                           <span className="text-red-400">${price.toLocaleString()}</span>
                           <span className="text-gray-400">{(Math.random() * 10).toFixed(4)}</span>
@@ -355,7 +306,7 @@ export default function TradePage() {
 
                     {/* Buy Orders */}
                     <div className="space-y-1">
-                      {[69425, 69420, 69415, 69410, 69405].map((price, index) => (
+                      {[69425, 69420, 69415, 69410, 69405].map((price) => (
                         <div key={price} className="flex justify-between text-sm">
                           <span className="text-green-400">${price.toLocaleString()}</span>
                           <span className="text-gray-400">{(Math.random() * 10).toFixed(4)}</span>
@@ -368,7 +319,7 @@ export default function TradePage() {
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

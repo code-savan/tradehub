@@ -1,27 +1,21 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  LayoutDashboard,
-  TrendingUp,
-  Wallet,
-  Settings,
-  Bell,
-  LogOut,
-  Menu,
-  X,
-  Search,
-  ArrowUpRight,
-  ArrowDownRight,
-  Download,
-  RefreshCw,
-  PieChart,
-  BarChart3,
-  Clock,
   DollarSign,
   Activity,
   Target,
-  TrendingDown,
-  Calendar
+  X,
+  LogOut,
+  Wallet,
+  Search,
+  RefreshCw,
+  Download,
+  Bell,
+  ArrowUpRight,
+  ArrowDownRight,
+  PieChart,
+  BarChart3,
+  TrendingUp
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
@@ -34,7 +28,7 @@ import { Badge } from '../components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { Separator } from '../components/ui/separator';
+import { Progress } from '../components/ui/progress';
 import TradingChart from '../components/charts/TradingChart';
 import Sidebar from '../components/layout/Sidebar';
 import MobileHeader from '../components/layout/MobileHeader';
@@ -65,19 +59,6 @@ interface Transaction {
   timestamp: Date;
   status: 'completed' | 'pending' | 'failed';
 }
-
-interface NavItem {
-  id: string;
-  label: string;
-  icon: React.ElementType;
-}
-
-const navItems: NavItem[] = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { id: 'markets', label: 'Markets', icon: TrendingUp },
-  { id: 'portfolio', label: 'Portfolio', icon: Wallet },
-  { id: 'settings', label: 'Settings', icon: Settings },
-];
 
 const mockHoldings: Holding[] = [
   {
@@ -203,7 +184,7 @@ export default function PortfolioPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTimeframe, setSelectedTimeframe] = useState('24h');
   const [holdings, setHoldings] = useState<Holding[]>(mockHoldings);
-  const [transactions, setTransactions] = useState<Transaction[]>(mockTransactions);
+  const [transactions] = useState<Transaction[]>(mockTransactions);
 
   // Calculate portfolio totals
   const totalValue = holdings.reduce((sum, holding) => sum + holding.value, 0);
@@ -235,12 +216,6 @@ export default function PortfolioPage() {
     }, 5000);
     return () => clearInterval(interval);
   }, [updatePrices, assets]);
-
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-    toast.success('Logged out successfully');
-  };
 
   const filteredHoldings = holdings.filter(holding =>
     holding.symbol.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -334,7 +309,11 @@ export default function PortfolioPage() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={handleLogout}
+                  onClick={() => {
+                    logout();
+                    navigate('/');
+                    toast.success('Logged out successfully');
+                  }}
                   className="text-gray-400 hover:text-white"
                 >
                   <LogOut className="w-4 h-4" />
@@ -781,34 +760,6 @@ export default function PortfolioPage() {
                   </button>
                 </div>
 
-                <nav className="space-y-2">
-                  {navItems.map((item) => {
-                    const Icon = item.icon;
-                    return (
-                      <button
-                        key={item.id}
-                        onClick={() => {
-                          setActiveTab(item.id);
-                          setIsMobileMenuOpen(false);
-                          if (item.id === 'dashboard') navigate('/dashboard');
-                          if (item.id === 'markets') navigate('/markets');
-                          if (item.id === 'portfolio') navigate('/portfolio');
-                          if (item.id === 'settings') navigate('/settings');
-                        }}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                          activeTab === item.id
-                            ? 'bg-blue-500/20 text-blue-400'
-                            : 'hover:bg-white/5 text-gray-400'
-                        }`}
-                      >
-                        <Icon className="w-5 h-5" />
-                        <span>{item.label}</span>
-                      </button>
-                    );
-                  })}
-                </nav>
-
-                {/* User & Logout */}
                 <div className="p-4 border-t border-white/10 mt-auto">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
@@ -824,7 +775,11 @@ export default function PortfolioPage() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={handleLogout}
+                    onClick={() => {
+                      logout();
+                      navigate('/');
+                      toast.success('Logged out successfully');
+                    }}
                     className="w-full justify-start text-gray-400 hover:text-white hover:bg-white/10"
                   >
                     <LogOut className="w-4 h-4 mr-2" />
